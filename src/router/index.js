@@ -41,6 +41,15 @@ const router = createRouter({
       component: () => import("../views/LoginView.vue"),
     },
     {
+      path: "/logout",
+      name: "logout",
+      meta: {
+        title: "Logout",
+        navigation: false,
+      },
+      component: () => import("../views/LogoutView.vue"),
+    },
+    {
       path: "/register",
       name: "register",
       meta: {
@@ -66,6 +75,15 @@ const router = createRouter({
         navigation: true,
       },
       component: () => import("../views/ProfileView.vue"),
+    },
+    {
+      path: "/admin",
+      name: "admin",
+      meta: {
+        title: "Admin",
+        navigation: true,
+      },
+      component: () => import("../views/AdminView.vue"),
     },
   ],
 });

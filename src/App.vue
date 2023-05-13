@@ -9,17 +9,29 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { useUser } from "./composables/useUser";
+
 import NavigationBar from "./components/NavigationBar.vue";
 import FooterLayout from "./components/FooterLayout.vue";
 
 export default {
   components: {
     NavigationBar,
-    FooterLayout
+    FooterLayout,
   },
   setup() {
+    const store = useStore();
+    const { getUser } = useUser();
+    const { user } = getUser();
+    store.commit("updateUser", user);
+    if (user.value) {
+      console.log("user", user);
+      store.dispatch("getCurrentUser", "userInformation");
+    }
+
     return {};
-  }
+  },
 };
 </script>
 
@@ -68,7 +80,8 @@ export default {
   }
 }
 
-.router-button, button {
+.router-button,
+button {
   transition: 500ms ease all;
   cursor: pointer;
   margin-top: 24px;

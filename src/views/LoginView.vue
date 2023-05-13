@@ -37,6 +37,7 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { useLogin } from "../composables/useLogin";
 
 import EmailIcon from "../assets/Icons/envelope-regular.svg";
@@ -49,13 +50,18 @@ export default {
   },
   setup() {
     const router = useRouter();
+    const store = useStore();
     const { error, isPending, login } = useLogin();
 
     const email = ref("");
     const password = ref("");
 
     async function onSubmit() {
-      await login(email.value, password.value);
+      const result = await login(email.value, password.value);
+      if (result) {
+        // store.commit("updateUser", result.user);
+        store.dispatch("getCurrentUser", "userInformation");
+      }
       if (!error.value) {
         router.push({ name: "profile", params: {} });
       }

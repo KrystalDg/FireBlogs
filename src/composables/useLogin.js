@@ -17,7 +17,7 @@ async function login(email, password) {
     if (!response) {
       throw new Error("Could not sign in.");
     }
-    console.log(response);
+    console.log(response.user);
     return response;
   } catch (err) {
     console.log(err.code);

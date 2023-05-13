@@ -3,29 +3,88 @@
     <nav class="container">
       <div class="branding items-center">
         <div class="header">
-          <router-link :to="{ name: 'home', params: {} }">FireBlogs</router-link>
+          <router-link :to="{ name: 'home', params: {} }"
+            >FireBlogs</router-link
+          >
         </div>
       </div>
-      <div v-show="!mobile" class="absolute nav-links flex items-center mx-auto h-full">
-        <ul class="flex text-center justify-end text-sm mr-8 last:mr-0">
+      <div class="nav-links absolute flex items-center mx-auto h-full">
+        <ul v-show="!mobile" class="flex text-center justify-end text-sm">
           <li class="link" v-for="item in navItems" :key="item.name">
-            <router-link :to="{ name: item.name, params: {} }">{{item.text}}</router-link>
+            <router-link
+              v-show="
+                ($store.state.user && item.name !== 'login') ||
+                !$store.state.user
+              "
+              :to="{ name: item.name, params: {} }"
+              >{{ item.text }}</router-link
+            >
           </li>
         </ul>
+        <div
+          v-if="$store.state.user"
+          class="profile"
+          ref="profile"
+          @click="toggleProfileMenu"
+          :class="{ 'mobile-user-menu': mobile }"
+        >
+          <span>{{ $store.state.profileInitials }}</span>
+          <div v-show="profileMenu" class="profile-menu">
+            <div class="info">
+              <p class="initials">{{ $store.state.profileInitials }}</p>
+              <div class="right">
+                <p>
+                  {{ $store.state.profileFirstName }}
+                  {{ $store.state.profileLastName }}
+                </p>
+                <p>{{ $store.state.profileUsername }}</p>
+                <p>{{ $store.state.profileEmail }}</p>
+              </div>
+            </div>
+            <div class="options">
+              <div class="option">
+                <router-link
+                  class="option"
+                  :to="{ name: 'profile', params: {} }"
+                >
+                  <user-icon class="icon" />
+                  <p>Profile</p>
+                </router-link>
+              </div>
+              <div class="option">
+                <router-link class="option" :to="{ name: 'admin', params: {} }">
+                  <admin-icon class="icon" />
+                  <p>Admin</p>
+                </router-link>
+              </div>
+              <div class="option">
+                <router-link
+                  class="option"
+                  :to="{ name: 'logout', params: {} }"
+                >
+                  <logout-icon class="icon" />
+                  <p>Logout</p>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <img
-        src="../assets/Icons/bars-regular.svg"
-        alt="icon"
-        class="cursor-pointer right-6 h-6 w-auto absolute"
-        @click="toggleMobileNav"
-        v-show="mobile"
-      />
+      <div class="flex items-center">
+        <menu-icon
+          class="cursor-pointer right-6 h-6 w-auto absolute"
+          @click="toggleMobileNav"
+          v-show="mobile"
+        />
+      </div>
     </nav>
     <transition name="mobile-nav">
       <div class="mobile-nav-links" v-show="mobileNav">
         <ul class="flex-col text-sm">
           <li class="link" v-for="item in navItems" :key="item.name">
-            <router-link :to="{ name: item.name, params: {} }">{{item.text}}</router-link>
+            <router-link :to="{ name: item.name, params: {} }">{{
+              item.text
+            }}</router-link>
           </li>
         </ul>
       </div>
@@ -35,15 +94,23 @@
 
 <script>
 import { ref } from "vue";
+
 import { HEADER_ITEMS } from "../constants/index";
+
+import MenuIcon from "../assets/Icons/bars-regular.svg";
+import UserIcon from "../assets/Icons/user-alt-light.svg";
+import AdminIcon from "../assets/Icons/user-crown-light.svg";
+import LogoutIcon from "../assets/Icons/sign-out-alt-regular.svg";
+
 export default {
-  // components: { menuIcon },
+  components: { MenuIcon, UserIcon, AdminIcon, LogoutIcon },
 
   setup() {
     const navItems = HEADER_ITEMS;
     const mobile = ref(null);
     const mobileNav = ref(null);
     const windowWidth = ref(null);
+    const profileMenu = ref(false);
 
     const resizeScreen = () => {
       window.addEventListener("resize", checkScreen);
@@ -66,15 +133,21 @@ export default {
       mobileNav.value = !mobileNav.value;
     }
 
+    function toggleProfileMenu() {
+      profileMenu.value = !profileMenu.value;
+    }
+
     return {
       navItems,
       mobile,
       mobileNav,
       windowWidth,
+      profileMenu,
       checkScreen,
-      toggleMobileNav
+      toggleMobileNav,
+      toggleProfileMenu,
     };
-  }
+  },
 };
 </script>
 
@@ -114,9 +187,9 @@ header {
       align-items: center;
       justify-content: flex-end;
 
-      ul {
-        margin-right: 32px;
-      }
+      // ul {
+      //   margin-right: 32px;
+      // }
 
       .profile {
         position: relative;

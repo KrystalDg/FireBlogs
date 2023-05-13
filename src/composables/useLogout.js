@@ -8,6 +8,7 @@ async function logout() {
   error.value = null;
   try {
     const response = await signOut(projectAuth);
+    // window.location.reload();
     return response;
   } catch (err) {
     console.log(err.code);
@@ -15,6 +16,6 @@ async function logout() {
   }
 }
 
-export function useLogOut() {
+export function useLogout() {
   return { error, logout };
 }
