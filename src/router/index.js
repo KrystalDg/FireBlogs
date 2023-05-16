@@ -85,6 +85,24 @@ const router = createRouter({
       },
       component: () => import("../views/AdminView.vue"),
     },
+    {
+      path: "/view-blog/:blogid",
+      name: "view-blog",
+      meta: {
+        title: "View Blog",
+        navigation: true,
+      },
+      component: () => import("../views/ViewBlogView.vue"),
+    },
+    {
+      path: "/blog-preview",
+      name: "blog-preview",
+      meta: {
+        title: "Blog Preview",
+        navigation: true,
+      },
+      component: () => import("../views/BlogPreviewView.vue"),
+    },
   ],
 });
 

@@ -10,14 +10,22 @@
       </div>
       <div class="nav-links absolute flex items-center mx-auto h-full">
         <ul v-show="!mobile" class="flex text-center justify-end text-sm">
-          <li class="link" v-for="item in navItems" :key="item.name">
+          <li class="link">
+            <router-link class="link" :to="{ name: 'home' }">Home</router-link>
+            <router-link class="link" :to="{ name: 'blogs' }"
+              >Blogs</router-link
+            >
             <router-link
-              v-show="
-                ($store.state.user && item.name !== 'login') ||
-                !$store.state.user
-              "
-              :to="{ name: item.name, params: {} }"
-              >{{ item.text }}</router-link
+              v-if="$store.state.profileAdmin"
+              class="link"
+              :to="{ name: 'create' }"
+              >Create Post</router-link
+            >
+            <router-link
+              v-if="!$store.state.user"
+              class="link"
+              :to="{ name: 'login' }"
+              >Login/Register</router-link
             >
           </li>
         </ul>
@@ -37,7 +45,7 @@
                   {{ $store.state.profileFirstName }}
                   {{ $store.state.profileLastName }}
                 </p>
-                <p>{{ $store.state.profileUsername }}</p>
+                <p>{{ $store.state.profileUserName }}</p>
                 <p>{{ $store.state.profileEmail }}</p>
               </div>
             </div>
@@ -51,7 +59,7 @@
                   <p>Profile</p>
                 </router-link>
               </div>
-              <div class="option">
+              <div v-if="$store.state.profileAdmin" class="option">
                 <router-link class="option" :to="{ name: 'admin', params: {} }">
                   <admin-icon class="icon" />
                   <p>Admin</p>

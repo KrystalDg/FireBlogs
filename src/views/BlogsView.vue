@@ -1,12 +1,16 @@
 <template>
   <div class="blog-card-wrap">
     <div class="blog-cards-container">
-      <div class="toggle-edit">
+      <div v-if="$store.state.profileAdmin" class="toggle-edit">
         <span class="font-bold">Toggle Edit Post</span>
         <input type="checkbox" v-model="editPost" />
       </div>
       <div class="blog-cards">
-        <blog-card :post="post" v-for="(post, index) in sampleBlogCard" :key="index" />
+        <blog-card
+          :post="post"
+          v-for="(post, index) in sampleBlogCard"
+          :key="index"
+        />
       </div>
     </div>
   </div>
@@ -19,9 +23,9 @@ import BlogCard from "../components/BlogCard.vue";
 
 export default {
   components: {
-    BlogCard
+    BlogCard,
   },
-  
+
   setup() {
     const store = useStore();
     const sampleBlogCard = computed(() => store.state.sampleBlogCard);
@@ -31,16 +35,15 @@ export default {
       },
       set(payload) {
         store.commit("toggleEditPost", payload);
-      }
+      },
     });
     onBeforeUnmount(() => store.commit("toggleEditPost", false));
 
-
     return {
       sampleBlogCard,
-      editPost
+      editPost,
     };
-  }
+  },
 };
 </script>
 

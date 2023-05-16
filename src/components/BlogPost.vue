@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-wrapper no-user">
+  <div class="blog-wrapper" :class="{ 'no-user': !$store.state.user }">
     <div class="blog-content">
       <h2 v-if="post.welcomeScreen">{{ post.title }}</h2>
       <h2 v-else>{{ post.title }}</h2>
@@ -38,12 +38,12 @@ import ArrowIcon from "../assets/Icons/arrow-right-light.svg";
 
 export default {
   components: {
-    ArrowIcon
+    ArrowIcon,
   },
   props: ["post"],
   setup() {
     return {};
-  }
+  },
 };
 </script>
 

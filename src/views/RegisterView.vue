@@ -43,6 +43,8 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+
 import { useRegister } from "../composables/useRegister";
 import useCollection from "../composables/useCollection";
 
@@ -58,6 +60,7 @@ export default {
   },
   setup() {
     const router = useRouter();
+    const store = useStore();
     const { error, isPending, register } = useRegister();
     const { errorStore, addRecord } = useCollection("userInformation");
 
@@ -92,6 +95,7 @@ export default {
         email: email.value,
         firstName: firstName.value,
         lastName: lastName.value,
+        isAdmin: false,
       };
       const result = await register(
         email.value,
@@ -99,6 +103,10 @@ export default {
         firstName.value,
         lastName.value
       );
+      if (result) {
+        // store.commit("updateUser", result.user);
+        store.dispatch("getCurrentUser", "userInformation");
+      }
       await addRecord(result.user.uid, userInfomation);
 
       if (!error.value && !errorStore.value) {

@@ -26,8 +26,9 @@ export default {
     const { user } = getUser();
     store.commit("updateUser", user);
     if (user.value) {
-      console.log("user", user);
+      // console.log("user", user);
       store.dispatch("getCurrentUser", "userInformation");
+      store.dispatch("getBlogPosts", "blogPosts");
     }
 
     return {};

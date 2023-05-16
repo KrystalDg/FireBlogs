@@ -3,7 +3,9 @@
     <div class="container">
       <div class="left">
         <div class="col-1">
-          <router-link class="header" :to="{ name: 'home' }">FireBlogs</router-link>
+          <router-link class="header" :to="{ name: 'home' }"
+            >FireBlogs</router-link
+          >
           <ul>
             <li>
               <a href="#">
@@ -31,8 +33,18 @@
           <ul>
             <router-link class="link" :to="{ name: 'home' }">Home</router-link>
             <router-link class="link" :to="{ name: 'home' }">Blogs</router-link>
-            <router-link class="link" :to="{ name: 'home' }">Create Post</router-link>
-            <router-link class="link" :to="{ name: 'home' }">Login In / Register</router-link>
+            <router-link
+              v-if="$store.state.profileAdmin"
+              class="link"
+              :to="{ name: 'home' }"
+              >Create Post</router-link
+            >
+            <router-link
+              v-if="!$store.state.user"
+              class="link"
+              :to="{ name: 'home' }"
+              >Login In / Register</router-link
+            >
           </ul>
         </div>
       </div>
@@ -53,11 +65,11 @@ export default {
     youTube,
     twitter,
     instagram,
-    linkedin
+    linkedin,
   },
   setup() {
     return {};
-  }
+  },
 };
 </script>
 
